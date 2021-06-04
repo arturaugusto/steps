@@ -20,7 +20,7 @@
 
       <div v-if="orcamentoSel">
 
-        <h2 class="subtitle is-size-4">Orçamento: {{ orcamentoSel }} (<a class="is-size-6" href="">download do orçamento</a>)</h2>
+        <h2 class="subtitle is-size-4">Orçamento: {{ orcamentoSel }} (<a class="is-size-6" target="_blank" href="https://ensinoiptbr-my.sharepoint.com/personal/rrgavioli_ipt_br/_layouts/15/onedrive.aspx?id=%2Fpersonal%2Frrgavioli%5Fipt%5Fbr%2FDocuments%2Forcamentacao%5Fcomp%5Femail%2Epdf&parent=%2Fpersonal%2Frrgavioli%5Fipt%5Fbr%2FDocuments&originalPath=aHR0cHM6Ly9lbnNpbm9pcHRici1teS5zaGFyZXBvaW50LmNvbS86YjovZy9wZXJzb25hbC9ycmdhdmlvbGlfaXB0X2JyL0VUMTVkMGp5NE5wRGtJVDg0ZWo5dXJJQjJsekZYcFA4dzZYaGZrNVVuVEllWFE%5FcnRpbWU9SjNVLWYxd24yVWc">download do orçamento</a>)</h2>
 
         <img v-if="currStep > 0" src="./assets/download.gif">
 
@@ -30,8 +30,10 @@
           </p>
           <p>
             <label class="checkbox">
-              <input type="checkbox" v-model="etiquetaColada">
-              <span v-bind:class="!etiquetaColada ? 'has-text-danger-dark' : 'has-text-success'">  {{!etiquetaColada ? ' Colar etiqueta' : ' Etiqueta OK'}}</span>
+              <!-- <input type="checkbox" v-model="etiquetaColada"> -->
+              <!-- <span v-bind:class="!etiquetaColada ? 'has-text-danger-dark' : 'has-text-success'">  {{!etiquetaColada ? ' Colar etiqueta' : ' Etiqueta OK'}}</span> -->
+              <div class="subtitle is-size-4"><a class="is-size-6" target="_blank" href="etiqueta.png">Clique aqui para baixar a etiqueta</a></div>
+
             </label>
           </p>
         </span>
@@ -84,7 +86,7 @@
 
                   <label class="checkbox">
                     Aprovar
-                    <input type="checkbox">
+                    <input type="checkbox" v-model="x.checked">
                   </label>
                   <p class="has-text-success has-text-small">Serviço acreditado</p>
 
@@ -94,14 +96,16 @@
                 <!-- <p>Descrição do ensaio: <strong>Determinação de área específica (método BET)</strong></p> -->
                 <!-- <p>Número de itens: <strong>{{amostras.length}}</strong></p> -->
                 <!-- <p>Preço por item: <strong>R$ 2.389,20</strong></p> -->
-                <p>Preço total: <strong>R$ 4.778,4</strong></p>
+                <p>Preço total: <strong>R$ {{precoTotal}}</strong></p>
                 
                 <p>Validade do orçamento: <strong>5 dias úteis (até 08/06/2021)</strong></p>
 
 
                 <p>Prazo: <strong>até 22 dias úteis após aprovação e recebimento da amostra.</strong></p>
 
-                <p class="has-text-warning-dark">Esta proposta expirou, mas sem problemas. Você será informado caso ocorra mudanças no preço ou prazo de execução.</p>
+                <!-- <p class="has-text-warning-dark">Esta proposta expirou, mas sem problemas. Você será informado caso ocorra mudanças no preço ou prazo de execução.</p> -->
+
+                <p><strong>Para prosseguir, seu cadastro deve estar atualizado. </strong><a href="https://cadastro.ipt.br/Clientes.aspx" target="_blank">Clique aqui para atualizar</a></p>
 
                 <label class="checkbox">
                   <input type="checkbox" v-model="concordoOrcamento">
@@ -128,13 +132,27 @@
                 <p><strong>Agora você já pode enviar sua amostra.</strong></p>
                 
                 <p><strong>Instruções:</strong></p>
-                
-                <p>Garanta que seu material estará bem embalado e identificado.</p>
 
+                <ul>
+                  
+                </ul>
 
-                <p>Ele deverá ser encaminhado aos cuidados de IPT</p>
+                <li>
+                  Lembre-se de acondicionar seu material em embalagem limpa, seca e hermeticamente fechada para preservação das condições.                  
+                </li>
+
+                <li>
+                  Garanta que seu material estará bem embalado e identificado.
+                </li>
+
+                <li>
+                  Precisaremos de 300 g  de material. Caso seja enviada uma quantidade superior à solicitada, a porção necessária será retirada, sem procedimento de amostragem, e o excedente será descartado.
+                </li>
                 
-                <p>Nosso horário de recebimento é das 8:00 - 17:00</p>
+                <li>Ele deverá ser encaminhado aos cuidados de IPT</li>
+                
+                <li>Nosso horário de recebimento é das 8:00 - 17:00</li>
+                <li>O material deve vir acompanhado de Nota Fiscal</li>
                 
 
                 <!-- <label class="checkbox">
@@ -149,9 +167,7 @@
                 <br>
 
                 
-                
-
-                <p><strong>Para prosseguir, seu cadastro deve estar atualizado. </strong><a href="">Clique aqui para atualizar</a></p>
+            
 
                 <!-- <div class="field is-horizontal">
                   <div class="field-label is-normal">
@@ -209,7 +225,10 @@
               v-bind:class="currStep === 3 ? 'is-active' : ''">
 
               <h1 class="title is-4">Relatório finalizado!</h1>
-              <p>Você pode baixar uma cópia em: <a href="">123456-101</a></p>
+              
+
+
+              <p>Você pode baixar uma cópia em: <a class="is-size-6" target="_blank" href="45678-101.pdf">45678-101</a></p>
 
 
 
@@ -254,11 +273,11 @@ export default {
     return {
       currStep: 0,
       concordoOrcamento: false,
-      etiquetaColada: false,
+      etiquetaColada: true,
       orcamentoSel: undefined,
       amostras: [
-        {desc: "Determinação de área específica (método BET)", "preco": "2.389,20"},
-        {desc: "Determinação de área específica (método BET)", "preco": "2.389,20"},
+        {desc: "Determinação de área específica (método BET)", "preco": "2.389,20", "checked": false, "precoVal": 2389.2},
+        {desc: "Determinação de área específica (método BET)", "preco": "2.389,20", "checked": false, "precoVal": 2389.2},
       ]
     }
   },
@@ -268,8 +287,8 @@ export default {
         this.currStep = 0
         this.concordoOrcamento = false
         this.amostras = [
-          {desc: "Determinação de área específica (método BET)", "preco": "2.389,20"},
-          {desc: "Determinação de área específica (método BET)", "preco": "2.389,20"},
+          {desc: "Determinação de área específica (método BET)", "preco": "2.389,20", "checked": false, "precoVal": 2389.2},
+          {desc: "Determinação de área específica (método BET)", "preco": "2.389,20", "checked": false, "precoVal": 2389.2},
         ]
 
       }
@@ -277,8 +296,8 @@ export default {
         this.currStep = 2
         this.concordoOrcamento = false
         this.amostras = [
-          {desc: "Determinação de área específica (método BET)", "preco": "2.389,20"},
-          {desc: "Determinação de área específica (método BET)", "preco": "2.389,20"},
+          {desc: "Determinação de área específica (método BET)", "preco": "2.389,20", "checked": false, "precoVal": 2389.2},
+          {desc: "Determinação de área específica (método BET)", "preco": "2.389,20", "checked": false, "precoVal": 2389.2},
         ]
       }
 
@@ -286,6 +305,9 @@ export default {
     }
   },
   computed: {
+    precoTotal () {
+      return this.amostras.filter(x => x.checked).map(item => item.precoVal).reduce((a, c) => a+c, 0)
+    },
     etapaNext () {
       return ({
         0: "Aprovar",
