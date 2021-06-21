@@ -1,5 +1,7 @@
-// module.exports = {
-//   devServer: {
-//     host: '127.0.0.1:8080'
-//   }
-// }
+const webpack = require('webpack')
+const prod = process.env.NODE_ENV === 'production'
+
+module.exports = {
+  productionSourceMap: false,
+  "publicPath": prod ? "./" : undefined,
+};

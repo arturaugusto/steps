@@ -20,7 +20,7 @@
 
       <div v-if="orcamentoSel">
 
-        <h2 class="subtitle is-size-4">Orçamento: {{ orcamentoSel }} (<a class="is-size-6" target="_blank" href="https://ensinoiptbr-my.sharepoint.com/personal/rrgavioli_ipt_br/_layouts/15/onedrive.aspx?id=%2Fpersonal%2Frrgavioli%5Fipt%5Fbr%2FDocuments%2Forcamentacao%5Fcomp%5Femail%2Epdf&parent=%2Fpersonal%2Frrgavioli%5Fipt%5Fbr%2FDocuments&originalPath=aHR0cHM6Ly9lbnNpbm9pcHRici1teS5zaGFyZXBvaW50LmNvbS86YjovZy9wZXJzb25hbC9ycmdhdmlvbGlfaXB0X2JyL0VUMTVkMGp5NE5wRGtJVDg0ZWo5dXJJQjJsekZYcFA4dzZYaGZrNVVuVEllWFE%5FcnRpbWU9SjNVLWYxd24yVWc">download do orçamento</a>)</h2>
+        <h2 class="subtitle is-size-4">Orçamento: {{ orcamentoSel }} (<a class="is-size-6" target="_blank" href="./orcamentacao_comp_email.pdf">download do orçamento</a>)</h2>
 
         <img v-if="currStep > 0" src="./assets/download.gif">
 
@@ -62,13 +62,21 @@
 
             <div class="step-marker">3</div>
             <div class="step-details">
-              <p class="step-title is-size-6">A análise foi iniciada</p>
+              <p class="step-title is-size-6">Aguardando amostra</p>
             </div>
           </div>
           <div class="step-item"
-            v-bind:class="currStep >= 3 ? 'is-active is-success' : ''">
+            v-bind:class="currStep >= 3 ? 'is-active '+(currStep >= 4 ? 'is-success' : '_is-warning') : ''">
 
             <div class="step-marker">4</div>
+            <div class="step-details">
+              <p class="step-title is-size-6">Análise iniciada</p>
+            </div>
+          </div>
+          <div class="step-item"
+            v-bind:class="currStep >= 4 ? 'is-active is-success' : ''">
+
+            <div class="step-marker">5</div>
             <div class="step-details">
               <p class="step-title is-size-6">Fim</p>
             </div>
@@ -105,7 +113,7 @@
 
                 <!-- <p class="has-text-warning-dark">Esta proposta expirou, mas sem problemas. Você será informado caso ocorra mudanças no preço ou prazo de execução.</p> -->
 
-                <p><strong>Para prosseguir, seu cadastro deve estar atualizado. </strong><a href="https://cadastro.ipt.br/Clientes.aspx" target="_blank">Clique aqui para atualizar</a></p>
+                <p><strong>Para prosseguir, seu cadastro deve estar atualizado. </strong><a href="./cadastro.png" target="_blank">Clique aqui para atualizar</a></p>
 
                 <label class="checkbox">
                   <input type="checkbox" v-model="concordoOrcamento">
@@ -211,12 +219,11 @@
             </div>
 
 
-
             <div class="step-content has-text-centered"
               v-bind:class="currStep === 2 ? 'is-active' : ''">
 
-              <h4 class="title is-4"><strong>A análise está em andamento. Você será notificado quando o serviço for finalizado.</strong></h4>
-              <p><strong>Prazo máximo para término do trabalho: 12/06/2021.</strong></p>
+              <h4 class="title is-4"><strong>Aguardando o recebimento da amostra.</strong></h4>
+              <h4 class="is-size-5"><strong>Você receberá um alerta quanto for recebida.</strong></h4>
             </div>
 
 
@@ -224,11 +231,20 @@
             <div class="step-content has-text-centered"
               v-bind:class="currStep === 3 ? 'is-active' : ''">
 
+              <h4 class="title is-4"><strong>Amostra recebida e análise iniciada. Você receberá uma notificação quando o serviço for finalizado.</strong></h4>
+              <p class="is-size-5"><strong>Prazo máximo para término do trabalho: 05/07/2021.</strong></p>
+            </div>
+
+
+
+            <div class="step-content has-text-centered"
+              v-bind:class="currStep === 4 ? 'is-active' : ''">
+
               <h1 class="title is-4">Relatório finalizado!</h1>
               
 
 
-              <p>Você pode baixar uma cópia em: <a class="is-size-6" target="_blank" href="45678-101.pdf">45678-101</a></p>
+              <p class="is-size-5"><strong>Você pode baixar uma cópia em: <a class="" target="_blank" href="45678-101.pdf">45678-101</a></strong></p>
 
 
 
@@ -239,15 +255,30 @@
               <a v-if="currStep !== 0" href="#" data-nav="previous" class="button is-light" @click="currStep = Math.max(currStep - 1, 0)">Voltar</a>
             </div>
             <div class="steps-action">
-              <button v-if="currStep !== 3" href="#" data-nav="next" class="button is-light" @click="currStep = Math.min(currStep + 1, 4)" 
+              <button v-if="currStep !== 4" href="#" data-nav="next" class="button is-light" @click="currStep = Math.min(currStep + 1, 4)" 
                 :disabled="(currStep === 0 && !concordoOrcamento) || (currStep === 1 && !etiquetaColada)">{{etapaNext}}
               </button>
             </div>
           </div>
+
+          
+
+
         </div>
+
         
       </div>
-
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <div v-if="orcamentoSel" class="mt-4" style="text-align: left;">
+        <p class="is-size-5">Caso haja alguma duvida, utilize o campo abaixo para enviar uma mensagem ao laboratório responsável:</p>
+        <textarea class="textarea" placeholder="escreva sua mensagem..."></textarea>
+        <br>
+        <button class="button is-link" @click="enviaMsg">Enviar</button>
+      </div>
 
     </div>
 
@@ -269,6 +300,11 @@
 
 export default {
   name: 'App',
+  watch: {
+    currStep () {
+      window.scrollTo(0,0)
+    }
+  },
   data ()  {
     return {
       currStep: 0,
@@ -282,6 +318,9 @@ export default {
     }
   },
   methods: {
+    enviaMsg () {
+      window.alert("Mensagem enviada! Entraremos em contato através do seu e-mail.")
+    },
     mudaOrc () {
       if (this.orcamentoSel === '123/21') {
         this.currStep = 0
@@ -293,7 +332,7 @@ export default {
 
       }
       if (this.orcamentoSel === '124/21') {
-        this.currStep = 2
+        this.currStep = 4
         this.concordoOrcamento = false
         this.amostras = [
           {desc: "Determinação de área específica (método BET)", "preco": "2.389,20", "checked": false, "precoVal": 2389.2},
@@ -312,7 +351,8 @@ export default {
       return ({
         0: "Aprovar",
         1: "Proximo",
-        2: "Proximo"
+        2: "Proximo",
+        3: "Proximo",
       })[this.currStep]
     }
   }
