@@ -3,5 +3,5 @@ const prod = process.env.NODE_ENV === 'production'
 
 module.exports = {
   productionSourceMap: false,
-  "publicPath": prod ? "./" : undefined,
+  "publicPath": prod ? "./steps/" : undefined,
 };
